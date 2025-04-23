@@ -1,0 +1,80 @@
+from zipfile import ZipFile
+
+# Rutas de los archivos después del reinicio del entorno
+html_path = "/mnt/data/caminos_de_arte_galeria.html"
+img1_path = "/mnt/data/pinceladas_del_alma.jpg"
+img2_path = "/mnt/data/caminos_de_arte.jpg"
+zip_path = "/mnt/data/Caminos_de_Arte_Web.zip"
+
+# Crear archivo HTML y de imágenes de nuevo
+html_content = """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caminos de Arte – Julio Rolón</title>
+  <style>
+    body { font-family: 'Georgia', serif; margin: 0; background: #fdf6f0; color: #333; }
+    header { background: #2c2c2c; color: white; padding: 2rem; text-align: center; }
+    header h1 { font-size: 2.5rem; margin: 0; }
+    header p { font-size: 1.1rem; margin-top: 0.5rem; }
+    section { max-width: 900px; margin: 2rem auto; padding: 1rem; }
+    .poem-image { margin-bottom: 2rem; text-align: center; }
+    .poem-image img { max-width: 100%; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    footer { text-align: center; font-style: italic; padding: 2rem; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Caminos de Arte</h1>
+    <p>por Julio Rolón</p>
+  </header>
+
+  <section>
+    <p style="font-size: 1.2rem; line-height: 1.6; text-align: justify;">
+      Poeta visual que transforma la vida cotidiana en versos y pinceladas. Su obra nace desde la humildad, la esperanza y el color,
+      reflejando el alma del artista que ve belleza en lo simple. “Caminos de Arte” es un viaje poético entre imágenes y palabras,
+      donde cada trazo cuenta una historia y cada verso respira vida.
+    </p>
+    <p style="text-align: center; margin-top: 2rem; font-weight: bold; font-size: 1.1rem;">
+      “La vida es hermosa, y yo soy parte de ella.” — Julio Rolón
+    </p>
+  </section>
+
+  <section>
+    <div class="poem-image">
+      <img src="pinceladas_del_alma.jpg" alt="Poema Pinceladas del Alma">
+    </div>
+    <div class="poem-image">
+      <img src="caminos_de_arte.jpg" alt="Poema Caminos de Arte">
+    </div>
+  </section>
+
+  <footer>
+    Caminos de Arte © Julio Rolón
+  </footer>
+</body>
+</html>
+"""
+
+# Guardar el archivo HTML
+with open(html_path, "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+# Crear imágenes falsas para la demostración (en el entorno real, serían las imágenes originales)
+from PIL import Image, ImageDraw
+
+for path, text in [(img1_path, "Pinceladas del Alma"), (img2_path, "Caminos de Arte")]:
+    img = Image.new("RGB", (800, 600), color=(255, 230, 200))
+    draw = ImageDraw.Draw(img)
+    draw.text((50, 250), text, fill="black")
+    img.save(path)
+
+# Crear el archivo ZIP
+with ZipFile(zip_path, 'w') as zipf:
+    zipf.write(html_path, arcname="index.html")
+    zipf.write(img1_path, arcname="pinceladas_del_alma.jpg")
+    zipf.write(img2_path, arcname="caminos_de_arte.jpg")
+
+zip_path
